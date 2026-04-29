@@ -1,0 +1,17 @@
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=ap-southeast-2
+S3_BUCKET_NAME=your-healthcare-data-bucket
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=healthcare_db
+DB_USER=postgres
+DB_PASSWORD=your_password
+
+SNOWFLAKE_ACCOUNT=your_account
+SNOWFLAKE_USER=your_user
+SNOWFLAKE_PASSWORD=your_password
+SNOWFLAKE_DATABASE=HEALTHCARE_ANALYTICS
+SNOWFLAKE_SCHEMA=PUBLIC
+SNOWFLAKE_WAREHOUSE=COMPUTE_WH

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -216,3 +217,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+=======
+.env
+__pycache__/
+*.pyc
+logs/
+data/raw/
+data/processed/
+.venv/
+.DS_Store
+>>>>>>> a9a3f3c (Initial Healthcare data platform project setup)
