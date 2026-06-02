@@ -1,0 +1,11 @@
+
+services:
+  healthcare-etl:
+    build: .
+    container_name: healthcare_etl_app
+    volumes:
+      - .:/app
+    working_dir: /app
+    env_file:
+      - .env
+    command: python3 etl/pipeline.py

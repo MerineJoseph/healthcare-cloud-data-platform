@@ -1,0 +1,6 @@
+admission_id,patient_id,ward,admission_datetime,discharge_datetime,admission_type,length_of_stay_days
+A001,P001,Emergency,2026-01-01 08:30:00,2026-01-03 10:00:00,Emergency,2.0625
+A002,P002,Medical,2026-01-02 11:15:00,2026-01-06 09:30:00,Planned,3.9270833333333335
+A003,P003,Surgical,2026-01-03 14:00:00,2026-01-07 12:45:00,Planned,3.9479166666666665
+A004,P004,Emergency,2026-01-04 19:20:00,2026-01-05 08:10:00,Emergency,0.5347222222222222
+A005,P005,Medical,2026-01-05 09:00:00,2026-01-10 15:30:00,Referral,5.270833333333333

@@ -1,0 +1,7 @@
+record_id,date,ward,beds_available,beds_occupied
+B001,2026-01-01,Emergency,40,36
+B002,2026-01-01,Medical,55,49
+B003,2026-01-01,Surgical,35,30
+B004,2026-01-02,Emergency,40,39
+B005,2026-01-02,Medical,55,51
+B006,2026-01-02,Surgical,35,33

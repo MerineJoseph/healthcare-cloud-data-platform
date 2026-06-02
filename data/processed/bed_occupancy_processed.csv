@@ -1,0 +1,7 @@
+record_id,date,ward,beds_available,beds_occupied,occupancy_rate
+B001,2026-01-01,Emergency,40,36,0.9
+B002,2026-01-01,Medical,55,49,0.8909
+B003,2026-01-01,Surgical,35,30,0.8571
+B004,2026-01-02,Emergency,40,39,0.975
+B005,2026-01-02,Medical,55,51,0.9273
+B006,2026-01-02,Surgical,35,33,0.9429

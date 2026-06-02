@@ -1,0 +1,6 @@
+booking_id,patient_id,surgery_date,specialty,status
+T001,P001,2026-01-02,Orthopaedics,Completed
+T002,P002,2026-01-03,General Surgery,Cancelled
+T003,P003,2026-01-04,Cardiology,Completed
+T004,P004,2026-01-05,Orthopaedics,Did Not Attend
+T005,P005,2026-01-06,General Surgery,Completed
