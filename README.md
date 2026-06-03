@@ -46,7 +46,7 @@ Snowflake Cloud Warehouse
 Analytics SQL Views
       │
       ▼
-Power BI Dashboard
+Power BI-ready Reporting Layer
 ```
 
 ---
