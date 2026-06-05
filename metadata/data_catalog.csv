@@ -1,0 +1,17 @@
+dataset_name,column_name,description,data_type,sensitivity,business_rule
+admissions,admission_id,Unique admission identifier,string,Internal,Must be unique and not null
+admissions,patient_id,Patient identifier,string,Confidential,Must be present for each admission
+admissions,ward,Hospital ward,string,Internal,Must match known ward list
+admissions,admission_datetime,Admission timestamp,timestamp,Internal,Must be before discharge_datetime
+admissions,discharge_datetime,Discharge timestamp,timestamp,Internal,Must be after admission_datetime
+admissions,admission_type,Admission category,string,Internal,Expected values include Emergency Planned Referral
+bed_occupancy,record_id,Unique occupancy record identifier,string,Internal,Must be unique and not null
+bed_occupancy,date,Occupancy reporting date,date,Internal,Must be valid date
+bed_occupancy,ward,Hospital ward,string,Internal,Must match known ward list
+bed_occupancy,beds_available,Available bed count,integer,Internal,Must be greater than zero
+bed_occupancy,beds_occupied,Occupied bed count,integer,Internal,Cannot exceed beds_available
+theatre_bookings,booking_id,Unique theatre booking identifier,string,Internal,Must be unique and not null
+theatre_bookings,patient_id,Patient identifier,string,Confidential,Must be present
+theatre_bookings,surgery_date,Scheduled surgery date,date,Internal,Must be valid date
+theatre_bookings,specialty,Surgical specialty,string,Internal,Used for operational reporting
+theatre_bookings,status,Booking status,string,Internal,Used to calculate cancellation indicators
