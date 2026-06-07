@@ -17,7 +17,7 @@ Healthcare organisations generate large volumes of operational data from multipl
 * Theatre Bookings
 * Hospital Operations
 
-The objective of this project is to centralise healthcare operational data, improve data quality, and provide analytics-ready datasets to support hospital performance reporting and decision-making.
+The objective of this project is to centralise healthcare operational data, improve data quality, and provide analytics-ready datasets to support hospital performance reporting and decision-making. The platform also demonstrates governance, regulatory analytics, and dimensional modelling practices commonly used in enterprise healthcare and regulated environments.
 
 ---
 
@@ -30,20 +30,30 @@ Raw CSV Data
 AWS S3 Raw Data Layer
       │
       ▼
+Data Profiling Layer
+      │
+      ▼
 Python ETL Pipeline
       │
       ├── Data Validation
       ├── Data Transformation
-      └── Data Quality Checks
+      ├── Data Quality Checks
+      └── Governance Controls
       │
       ▼
 PostgreSQL Data Warehouse
       │
       ▼
+Star Schema Data Model
+      │
+      ├── Dimension Tables
+      └── Fact Tables
+      │
+      ▼
 Snowflake Cloud Warehouse
       │
       ▼
-Analytics SQL Views
+Regulatory Analytics Views
       │
       ▼
 Power BI-ready Reporting Layer
@@ -62,6 +72,8 @@ Power BI-ready Reporting Layer
 
 * ETL / ELT Pipelines
 * Data Modelling
+* Data Governance
+* Metadata Management
 * Data Quality Validation
 * Data Warehousing
 
@@ -91,7 +103,7 @@ Power BI-ready Reporting Layer
 ### Reporting & Visualisation
 
 * SQL Analytics Views
-* Power BI
+* Power BI-ready Reporting Layer
 
 ### Version Control
 
@@ -109,8 +121,6 @@ healthcare-cloud-data-platform/
 │   ├── raw/
 │   └── processed/
 │
-├── docs/
-│
 ├── etl/
 │   ├── extract.py
 │   ├── transform.py
@@ -125,9 +135,28 @@ healthcare-cloud-data-platform/
 │   ├── create_tables.sql
 │   ├── analytics_views.sql
 │   ├── snowflake_create_tables.sql
-│   └── snowflake_analytics_views.sql
+│   ├── snowflake_analytics_views.sql
+│   ├── star_schema.sql
+│   └── regulatory_analytics_views.sql
 │
-├── airflow/
+├── metadata/
+│   └── data_catalog.csv
+│
+├── docs/
+│   ├── data_governance.md
+│   ├── incident_management.md
+│   ├── star_schema_model.md
+│   └── data_profiles/
+│
+├── dags/
+│   └── healthcare_pipeline_dag.py
+│
+├── tests/
+│   └── test_dq_checks.py
+│
+├── .github/
+│   └── workflows/
+│        └── pipeline-checks.yml
 │
 ├── docker-compose.yml
 ├── Dockerfile
@@ -166,7 +195,42 @@ Implemented quality checks include:
 * Bed occupancy capacity checks
 * Dataset consistency checks
 
-### 4. PostgreSQL Data Warehouse
+### 4. Data Profiling Layer
+
+A dedicated profiling layer analyses source datasets before transformation.
+
+Capabilities:
+
+* Dataset statistics
+* Missing value detection
+* Duplicate detection
+* Data type analysis
+* Unique value analysis
+
+Generated Reports:
+
+* admissions_profile.md
+* bed_occupancy_profile.md
+* theatre_bookings_profile.md
+
+### 4.1 Metadata & Data Governance
+
+The platform includes a governance layer to improve auditability and data understanding.
+
+Features:
+
+* Data catalog
+* Column-level metadata
+* Sensitivity classification
+* Business rule documentation
+* Governance controls
+
+Files:
+
+* metadata/data_catalog.csv
+* docs/data_governance.md
+
+### 5. PostgreSQL Data Warehouse
 
 Processed healthcare data is loaded into PostgreSQL for structured storage and analysis.
 
@@ -176,7 +240,7 @@ Tables:
 * bed_occupancy
 * theatre_bookings
 
-### 5. AWS S3 Integration
+### 6. AWS S3 Integration
 
 Raw healthcare datasets are stored in AWS S3 to simulate cloud-based data lake architecture.
 
@@ -189,7 +253,7 @@ analytics/
 logs/
 ```
 
-### 6. Snowflake Cloud Warehouse
+### 7. Snowflake Cloud Warehouse
 
 Healthcare datasets are loaded into Snowflake for cloud-based analytics.
 
@@ -199,7 +263,7 @@ Tables:
 * BED_OCCUPANCY
 * THEATRE_BOOKINGS
 
-### 7. Analytics Layer
+### 8. Analytics Layer
 
 Business-focused analytics views are created to support reporting and decision-making.
 
@@ -210,7 +274,54 @@ Views:
 * VW_THEATRE_CANCELLATION_RATE
 * VW_HOSPITAL_OPERATIONS_SUMMARY
 
-### 8. Workflow Orchestration
+### 8.1 Regulatory Analytics Views
+
+The platform includes risk-based operational analytics.
+
+Views:
+
+* vw_ward_capacity_risk
+* vw_theatre_cancellation_risk
+* vw_operational_regulatory_summary
+
+These views classify operational metrics into risk categories to support monitoring and decision-making.
+
+### 8.2 Star Schema Data Model
+
+The project includes a Star Schema design to support analytics and reporting workloads.
+
+Dimension Tables:
+
+* dim_date
+* dim_ward
+* dim_admission_type
+
+Fact Tables:
+
+* fact_admissions
+* fact_bed_occupancy
+* fact_theatre_bookings
+
+Benefits:
+
+* Analytics-ready reporting
+* Improved query performance
+* Consistent business definitions
+* Scalable warehouse design
+
+### 8.3 Duplicate-safe Incremental Loading
+
+The PostgreSQL loader uses duplicate-safe loading logic with `ON CONFLICT DO NOTHING`. This implementation provides a foundation for future MERGE/UPSERT and CDC-based loading strategies commonly used in enterprise data platforms.
+
+This allows repeated pipeline runs without duplicate primary key failures.
+
+Primary keys:
+
+* admissions: admission_id
+* bed_occupancy: record_id
+* theatre_bookings: booking_id
+
+### 9. Workflow Orchestration
 
 Apache Airflow orchestrates the ETL workflow:
 
@@ -220,9 +331,25 @@ Apache Airflow orchestrates the ETL workflow:
 * Loading
 * Monitoring
 
-### 9. Dashboard & Reporting
+### 9.1 Incident Management & RCA
 
-Power BI dashboards visualise:
+The project includes incident documentation and root cause analysis examples.
+
+Covered Topics:
+
+* Duplicate key failures
+* Troubleshooting procedures
+* Monitoring controls
+* Resolution workflows
+* Production improvement recommendations
+
+Reference:
+
+docs/incident_management.md
+
+### 10. Dashboard & Reporting
+
+Power BI-ready reporting datasets support visualisation of:
 
 * Average Length of Stay
 * Bed Occupancy Trends
@@ -253,14 +380,52 @@ Provides consolidated operational performance metrics.
 
 ## Data Quality Framework
 
-The platform includes automated validation checks:
+The platform includes automated validation checks to ensure reliable data before loading.
+
+Checks include:
 
 * Missing values
-* Invalid dates
-* Capacity violations
-* Data consistency verification
+* Invalid date sequences
+* Bed capacity violations
+* Duplicate-safe loading validation
 
-This ensures reliable analytics and trustworthy reporting outputs.
+---
+
+## Automated Testing
+
+The platform includes automated unit tests for data quality validation logic.
+
+Coverage:
+
+* Null value validation
+* Date sequence validation
+* Bed capacity validation
+
+Framework:
+
+* pytest
+
+Result:
+
+* 6 automated tests passing
+
+---
+
+## CI/CD
+
+GitHub Actions automatically validates the project on code changes.
+
+Workflow Includes:
+
+* Dependency installation
+* Automated test execution
+* Continuous integration checks
+
+Benefits:
+
+* Improved code quality
+* Faster issue detection
+* Repeatable validation process
 
 ---
 
@@ -280,16 +445,33 @@ Logging supports operational monitoring and troubleshooting.
 
 ## Future Enhancements
 
-* Incremental Loading
-* CDC (Change Data Capture)
+* MERGE / UPSERT Loading
+* CDC (Change Data Capture) Framework
 * Snowflake Stages
 * COPY INTO Loading
 * dbt Transformations
 * Data Lineage Tracking
-* Automated Testing
-* CI/CD Pipelines
 * AWS Glue Integration
 * Role-Based Access Control
+
+---
+
+## Regulatory Analytics Capabilities
+
+This platform demonstrates data engineering practices relevant to regulated environments:
+
+* Data Profiling
+* Data Governance
+* Metadata Management
+* Data Quality Monitoring
+* Risk-based Analytics
+* Dimensional Data Modelling
+* Incident Management
+* Root Cause Analysis
+* Automated Testing
+* Cloud Data Warehousing
+* Incremental Loading
+* CI/CD Automation
 
 ---
 
@@ -300,12 +482,16 @@ Logging supports operational monitoring and troubleshooting.
 * Python Data Processing
 * AWS S3 Integration
 * Snowflake Data Warehousing
+* Dimensional Data Modelling (Star Schema)
+* Regulatory Analytics Engineering
+* Incremental Loading Strategies
 * Apache Airflow Orchestration
 * Docker Containerisation
 * Data Quality Engineering
 * Healthcare Data Analytics
 * Power BI Reporting
 * Cloud Data Platform Design
+* GitHub Actions CI/CD
 
 ---
 
@@ -316,4 +502,3 @@ Logging supports operational monitoring and troubleshooting.
 Data Engineer | Software Engineer
 
 GitHub: https://github.com/MerineJoseph
-

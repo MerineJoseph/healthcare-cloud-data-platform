@@ -16,6 +16,13 @@ DB_CONFIG = {
 }
 
 
+PRIMARY_KEYS = {
+    "admissions": "admission_id",
+    "bed_occupancy": "record_id",
+    "theatre_bookings": "booking_id",
+}
+
+
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)
 
@@ -24,27 +31,41 @@ def load_table(df: pd.DataFrame, table_name: str, conn):
     cols = list(df.columns)
     values = [tuple(x) for x in df.to_numpy()]
 
-    query = f"INSERT INTO {table_name} ({','.join(cols)}) VALUES %s"
+    primary_key = PRIMARY_KEYS.get(table_name)
+
+    if not primary_key:
+        raise ValueError(f"No primary key defined for table: {table_name}")
+
+    query = f"""
+        INSERT INTO {table_name} ({','.join(cols)})
+        VALUES %s
+        ON CONFLICT ({primary_key}) DO NOTHING
+    """
 
     with conn.cursor() as cursor:
         execute_values(cursor, query, values)
 
     conn.commit()
 
+    print(f"Loaded {len(values)} rows into {table_name} with duplicate-safe incremental logic.")
+
 
 def load_all():
     conn = get_connection()
 
-    admissions = pd.read_csv(PROCESSED_DATA_DIR / "admissions_processed.csv")
-    bed = pd.read_csv(PROCESSED_DATA_DIR / "bed_occupancy_processed.csv")
-    theatre = pd.read_csv(PROCESSED_DATA_DIR / "theatre_bookings_processed.csv")
+    try:
+        admissions = pd.read_csv(PROCESSED_DATA_DIR / "admissions_processed.csv")
+        bed = pd.read_csv(PROCESSED_DATA_DIR / "bed_occupancy_processed.csv")
+        theatre = pd.read_csv(PROCESSED_DATA_DIR / "theatre_bookings_processed.csv")
 
-    load_table(admissions, "admissions", conn)
-    load_table(bed, "bed_occupancy", conn)
-    load_table(theatre, "theatre_bookings", conn)
+        load_table(admissions, "admissions", conn)
+        load_table(bed, "bed_occupancy", conn)
+        load_table(theatre, "theatre_bookings", conn)
 
-    conn.close()
-    print("Data loaded successfully")
+        print("Data loaded successfully")
+
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
