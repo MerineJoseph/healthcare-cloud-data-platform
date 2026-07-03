@@ -24,39 +24,46 @@ The objective of this project is to centralise healthcare operational data, impr
 ## Architecture
 
 ```text
-Raw CSV Data
-      │
-      ▼
-AWS S3 Raw Data Layer
-      │
-      ▼
-Data Profiling Layer
-      │
-      ▼
-Python ETL Pipeline
-      │
-      ├── Data Validation
-      ├── Data Transformation
-      ├── Data Quality Checks
-      └── Governance Controls
-      │
-      ▼
-PostgreSQL Data Warehouse
-      │
-      ▼
-Star Schema Data Model
-      │
-      ├── Dimension Tables
-      └── Fact Tables
-      │
-      ▼
-Snowflake Cloud Warehouse
-      │
-      ▼
-Regulatory Analytics Views
-      │
-      ▼
-Power BI-ready Reporting Layer
+              Multi-source Data Ingestion
+                   │
+                   │
+            Python Extract
+                   │
+REST API (JSON) ───┘
+                   │
+                   ▼
+             Raw Data Layer
+                   │
+                   ▼
+          Data Profiling Layer
+                   │
+                   ▼
+          Python ETL Pipeline
+                   │
+                   ├── Data Validation
+                   ├── Data Transformation
+                   ├── Data Quality Checks
+                   └── Governance Controls
+                   │
+                   ▼
+      Duplicate-safe Incremental Load
+                   │
+        ┌──────────┴──────────┐
+        ▼                     ▼
+ PostgreSQL             Snowflake
+Operational Warehouse   Cloud Warehouse
+        │
+        ▼
+ Star Schema Data Model
+        │
+        ├── Dimension Tables
+        └── Fact Tables
+        │
+        ▼
+ Regulatory Analytics Views
+        │
+        ▼
+ Power BI-ready Reporting Layer
 ```
 
 ---
@@ -71,6 +78,8 @@ Power BI-ready Reporting Layer
 ### Data Engineering
 
 * ETL / ELT Pipelines
+* REST API Integration
+* JSON Processing
 * Data Modelling
 * Data Governance
 * Metadata Management
@@ -118,11 +127,13 @@ Power BI-ready Reporting Layer
 healthcare-cloud-data-platform/
 │
 ├── data/
+│   ├── api/
 │   ├── raw/
 │   └── processed/
 │
 ├── etl/
 │   ├── extract.py
+│   ├── api_extract.py
 │   ├── transform.py
 │   ├── load.py
 │   ├── load_snowflake.py
@@ -145,6 +156,7 @@ healthcare-cloud-data-platform/
 ├── docs/
 │   ├── data_governance.md
 │   ├── incident_management.md
+│   ├── rest_api_ingestion.md
 │   ├── star_schema_model.md
 │   └── data_profiles/
 │
@@ -175,6 +187,7 @@ Healthcare operational datasets are extracted from source files:
 * Admissions
 * Bed Occupancy
 * Theatre Bookings
+* Patient Referrals (REST API)
 
 ### 2. Data Transformation
 
@@ -239,6 +252,7 @@ Tables:
 * admissions
 * bed_occupancy
 * theatre_bookings
+* patient_referrals
 
 ### 6. AWS S3 Integration
 
@@ -262,6 +276,7 @@ Tables:
 * ADMISSIONS
 * BED_OCCUPANCY
 * THEATRE_BOOKINGS
+* PATIENT_REFERRALS
 
 ### 8. Analytics Layer
 
@@ -320,6 +335,7 @@ Primary keys:
 * admissions: admission_id
 * bed_occupancy: record_id
 * theatre_bookings: booking_id
+* patient_referrals: referral_id
 
 ### 9. Workflow Orchestration
 
@@ -434,6 +450,7 @@ Benefits:
 Pipeline execution logs are generated for:
 
 * Extraction
+* REST API extraction logging
 * Transformation
 * Validation
 * Loading
@@ -449,6 +466,10 @@ Logging supports operational monitoring and troubleshooting.
 * CDC (Change Data Capture) Framework
 * Snowflake Stages
 * COPY INTO Loading
+* REST API Authentication
+* REST API Pagination
+* Retry & Timeout Handling
+* OAuth-based API Integration
 * dbt Transformations
 * Data Lineage Tracking
 * AWS Glue Integration
@@ -480,6 +501,7 @@ This platform demonstrates data engineering practices relevant to regulated envi
 * ETL Pipeline Development
 * SQL Analytics
 * Python Data Processing
+* REST API Integration & JSON Processing
 * AWS S3 Integration
 * Snowflake Data Warehousing
 * Dimensional Data Modelling (Star Schema)
@@ -501,4 +523,4 @@ This platform demonstrates data engineering practices relevant to regulated envi
 
 Data Engineer | Software Engineer
 
-GitHub: https://github.com/MerineJoseph
+GitHub: [https://github.com/MerineJoseph](https://github.com/MerineJoseph)

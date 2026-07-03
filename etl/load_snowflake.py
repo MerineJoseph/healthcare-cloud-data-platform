@@ -51,10 +51,12 @@ def load_all_to_snowflake() -> None:
         admissions = pd.read_csv(PROCESSED_DATA_DIR / "admissions_processed.csv")
         bed_occupancy = pd.read_csv(PROCESSED_DATA_DIR / "bed_occupancy_processed.csv")
         theatre_bookings = pd.read_csv(PROCESSED_DATA_DIR / "theatre_bookings_processed.csv")
+        patient_referrals = pd.read_csv(PROCESSED_DATA_DIR / "patient_referrals_processed.csv")
 
         load_dataframe_to_snowflake(admissions, "ADMISSIONS", conn)
         load_dataframe_to_snowflake(bed_occupancy, "BED_OCCUPANCY", conn)
         load_dataframe_to_snowflake(theatre_bookings, "THEATRE_BOOKINGS", conn)
+        load_dataframe_to_snowflake(patient_referrals, "PATIENT_REFERRALS", conn)
 
     finally:
         conn.close()

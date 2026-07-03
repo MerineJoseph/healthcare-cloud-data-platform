@@ -1,0 +1,5 @@
+referral_id,patient_id,referral_source,referral_date,priority,status
+R001,P001,GP,2026-01-01,High,Accepted
+R002,P002,Specialist,2026-01-02,Medium,Pending
+R003,P003,Emergency,2026-01-03,High,Accepted
+R004,P004,Community Clinic,2026-01-04,Low,Rejected

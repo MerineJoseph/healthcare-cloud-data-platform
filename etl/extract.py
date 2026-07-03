@@ -19,11 +19,12 @@ def extract_all_sources() -> dict:
     admissions = read_csv_file("admissions.csv")
     bed_occupancy = read_csv_file("bed_occupancy.csv")
     theatre_bookings = read_csv_file("theatre_bookings.csv")
-
+    patient_referrals = read_csv_file("patient_referrals.csv")
     return {
         "admissions": admissions,
         "bed_occupancy": bed_occupancy,
         "theatre_bookings": theatre_bookings,
+        "patient_referrals": patient_referrals,
     }
 
 

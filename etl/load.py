@@ -20,6 +20,7 @@ PRIMARY_KEYS = {
     "admissions": "admission_id",
     "bed_occupancy": "record_id",
     "theatre_bookings": "booking_id",
+    "patient_referrals": "referral_id",
 }
 
 
@@ -57,10 +58,12 @@ def load_all():
         admissions = pd.read_csv(PROCESSED_DATA_DIR / "admissions_processed.csv")
         bed = pd.read_csv(PROCESSED_DATA_DIR / "bed_occupancy_processed.csv")
         theatre = pd.read_csv(PROCESSED_DATA_DIR / "theatre_bookings_processed.csv")
+        patient_referrals = pd.read_csv(PROCESSED_DATA_DIR / "patient_referrals_processed.csv")
 
         load_table(admissions, "admissions", conn)
         load_table(bed, "bed_occupancy", conn)
         load_table(theatre, "theatre_bookings", conn)
+        load_table(patient_referrals, "patient_referrals", conn)
 
         print("Data loaded successfully")
 

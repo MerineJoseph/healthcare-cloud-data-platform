@@ -1,0 +1,34 @@
+[
+  {
+    "referral_id": "R001",
+    "patient_id": "P001",
+    "referral_source": "GP",
+    "referral_date": "2026-01-01",
+    "priority": "High",
+    "status": "Accepted"
+  },
+  {
+    "referral_id": "R002",
+    "patient_id": "P002",
+    "referral_source": "Specialist",
+    "referral_date": "2026-01-02",
+    "priority": "Medium",
+    "status": "Pending"
+  },
+  {
+    "referral_id": "R003",
+    "patient_id": "P003",
+    "referral_source": "Emergency",
+    "referral_date": "2026-01-03",
+    "priority": "High",
+    "status": "Accepted"
+  },
+  {
+    "referral_id": "R004",
+    "patient_id": "P004",
+    "referral_source": "Community Clinic",
+    "referral_date": "2026-01-04",
+    "priority": "Low",
+    "status": "Rejected"
+  }
+]

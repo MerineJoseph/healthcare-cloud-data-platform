@@ -49,12 +49,23 @@ def transform_theatre_bookings(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def transform_patient_referrals(df):
+    df = df.copy()
 
+    df["referral_date"] = pd.to_datetime(df["referral_date"])
+    df["referral_source"] = df["referral_source"].str.strip()
+    df["priority"] = df["priority"].str.strip()
+    df["status"] = df["status"].str.strip()
+
+    return df
+
+## Main transform flow
 def transform_all_sources(sources: dict) -> dict:
     transformed = {
         "admissions": transform_admissions(sources["admissions"]),
         "bed_occupancy": transform_bed_occupancy(sources["bed_occupancy"]),
         "theatre_bookings": transform_theatre_bookings(sources["theatre_bookings"]),
+        "patient_referrals": transform_patient_referrals(sources["patient_referrals"]),
     }
 
     return transformed
